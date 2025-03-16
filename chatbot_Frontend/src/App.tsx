@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   TextField,
-  Button,
   Typography,
   Paper,
   Avatar,
@@ -90,11 +89,20 @@ const App: React.FC = () => {
           top: 0,
           zIndex: 1,
           backgroundColor: '#212121',
-          padding: '10px 20px',
+          padding: '15px 20px',
           borderBottom: '1px solid #424242',
         }}
       >
-        <Typography variant="h5" sx={{ backgroundColor:'#424245' ,color: '#fff',textAlign:'center' }}>
+        <Typography
+          variant="h5"
+          sx={{
+            backgroundColor: '#424245',
+            color: '#fff',
+            textAlign: 'center',
+            padding: '5px 0',
+            borderRadius: '5px',
+          }}
+        >
           阿賢聊天機器人 ChatBot
         </Typography>
       </Box>
@@ -240,15 +248,24 @@ const App: React.FC = () => {
               inputProps={{ accept: 'image/*' }}
             />
           </IconButton>
-          <Button
+          <IconButton
             onClick={handleSend}
-            variant="contained"
             disabled={loading}
-            endIcon={<SendIcon />}
-            sx={{ px: '15px', backgroundColor: '#0288d1' }}
+            sx={{
+              color: '#fff',
+              backgroundColor: '#0288d1',
+              padding: '10px',
+              '&:hover': { backgroundColor: '#0277bd' },
+              '&.Mui-disabled': { backgroundColor: '#0288d1', opacity: 0.6 },
+            }}
           >
-            {loading ? '發送中...' : '發送'}
-          </Button>
+            <SendIcon
+              sx={{
+                transform: loading ? 'rotate(45deg)' : 'none', // 發送中旋轉
+                transition: 'transform 0.3s ease', // 動畫效果
+              }}
+            />
+          </IconButton>
         </Box>
       </Box>
     </Box>
