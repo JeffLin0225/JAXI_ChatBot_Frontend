@@ -4,7 +4,6 @@ import {
   TextField,
   Typography,
   Paper,
-  Avatar,
   IconButton,
   Input,
 } from '@mui/material';
@@ -91,20 +90,51 @@ const App: React.FC = () => {
           backgroundColor: '#212121',
           padding: '15px 20px',
           borderBottom: '1px solid #424242',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        <Typography
-          variant="h5"
+        <Box
+          component="img"
+          src="/AiLogo2.jpg"
+          alt="ChatBot Icon"
           sx={{
-            backgroundColor: '#424245',
-            color: '#fff',
-            textAlign: 'center',
-            padding: '5px 0',
-            borderRadius: '5px',
+            width: '120px',
+            borderRadius: '10px',
+          }}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '15px',
+            flexGrow: 1,
           }}
         >
-          阿賢聊天機器人 ChatBot
-        </Typography>
+          <Box
+            component="img"
+            src="/AiLogo.jpg"
+            alt="ChatBot Icon"
+            sx={{
+              width: '100px',
+              height: '100px',
+              borderRadius: '5px',
+            }}
+          />
+          <Typography
+            variant="h5"
+            sx={{
+              backgroundColor: '#424245',
+              color: '#fff',
+              padding: '5px 10px',
+              borderRadius: '5px',
+            }}
+          >
+            JX-AI ChatBot 聊天機器人
+          </Typography>
+        </Box>
       </Box>
 
       {/* 對話框 */}
@@ -148,7 +178,17 @@ const App: React.FC = () => {
                   }}
                 >
                   {msg.sender === 'Bot' && (
-                    <Avatar sx={{ mr: '10px', bgcolor: '#4caf50' }}>B</Avatar>
+                    <Box
+                    component="img"
+                    src="/AiLogo.jpg" // 與 Bot 訊息一致
+                    alt="Bot Avatar"
+                    sx={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      mr: '10px',
+                    }}
+                  />
                   )}
                   <Paper
                     sx={{
@@ -176,16 +216,77 @@ const App: React.FC = () => {
                     )}
                   </Paper>
                   {msg.sender === 'You' && (
-                    <Avatar sx={{ ml: '10px', bgcolor: '#0288d1' }}>U</Avatar>
+                    <Box
+                    component="img"
+                    src="/AiLogo.jpg" // 與 Bot 訊息一致
+                    alt="Bot Avatar"
+                    sx={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      mr: '10px',
+                    }}
+                  />
                   )}
                 </Box>
               </Box>
             ))}
+            {/* 修改處：添加酷炫轉圈圈效果，當 loading 時顯示在機器人端 */}
+            {loading && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    maxWidth: '70%',
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src="/AiLogo.jpg" // 與 Bot 訊息一致
+                    alt="Bot Avatar"
+                    sx={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      mr: '10px',
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      width: '60px', // 更大尺寸
+                      height: '60px',
+                      border: '7px dotted rgb(237, 248, 35)',
+                      borderTop: '4px solid transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite', // 旋轉動畫
+                      boxShadow: '0 0 10px rgba(252, 255, 103, 0.93)', // 發光效果
+                    }}
+                  />
+                </Box>
+              </Box>
+            )}
           </Box>
         )}
+        {/* 修改處：定義酷炫轉圈圈的 CSS 動畫 */}
+        <style>
+          {`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}
+        </style>
       </Box>
 
       {/* 輸入區域 */}
+      {/* 修改處：移除原本的 CircularProgress */}
       <Box
         sx={{
           position: 'sticky',
@@ -205,15 +306,12 @@ const App: React.FC = () => {
               src={imagePreview}
               sx={{ maxWidth: '100px', maxHeight: '100px', borderRadius: '5px' }}
             />
-            <IconButton
-              onClick={handleRemoveImage}
-              sx={{ ml: '10px', color: '#fff' }}
-            >
+            <IconButton onClick={handleRemoveImage} sx={{ ml: '10px', color: '#fff' }}>
               <CloseIcon />
             </IconButton>
           </Box>
         )}
-        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <TextField
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -261,8 +359,8 @@ const App: React.FC = () => {
           >
             <SendIcon
               sx={{
-                transform: loading ? 'rotate(45deg)' : 'none', // 發送中旋轉
-                transition: 'transform 0.3s ease', // 動畫效果
+                transform: loading ? 'rotate(45deg)' : 'none',
+                transition: 'transform 0.3s ease',
               }}
             />
           </IconButton>

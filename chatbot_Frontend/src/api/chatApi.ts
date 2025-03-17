@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://your-backend-url/generate';
+const API_URL = 'http://localhost:5001/ask';
 
 export async function sendMessage(prompt: string, image?: File): Promise<string> {
   const formData = new FormData();
-  formData.append('prompt', prompt);
+  formData.append('question', prompt);
   if (image) {
     formData.append('image', image);
   }
@@ -12,9 +12,8 @@ export async function sendMessage(prompt: string, image?: File): Promise<string>
   try {
     const response = await axios.post(API_URL, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 10000,
     });
-    return response.data.response;
+    return response.data.answer;
   } catch (error) {
     const axiosError = error as any;
     throw new Error(axiosError.response?.data?.message || '無法連接到伺服器');
