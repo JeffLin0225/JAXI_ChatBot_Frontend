@@ -115,6 +115,15 @@ const App: React.FC = () => {
         >
           <Box
             component="img"
+            src="/jaxi.jpg"
+            alt="ChatBot Icon"
+            sx={{
+              height: '100px',
+              borderRadius: '10px',
+            }}
+          />
+          <Box
+            component="img"
             src="/AiLogo.jpg"
             alt="ChatBot Icon"
             sx={{
@@ -123,17 +132,18 @@ const App: React.FC = () => {
               borderRadius: '5px',
             }}
           />
-          <Typography
-            variant="h5"
+          {/* <Typography
+            variant="h2"
             sx={{
               backgroundColor: '#424245',
               color: '#fff',
               padding: '5px 10px',
               borderRadius: '5px',
+              fontStyle: 'oblique'
             }}
           >
-            JX-AI ChatBot 聊天機器人
-          </Typography>
+            JAXI
+          </Typography> */}
         </Box>
       </Box>
 
@@ -180,7 +190,7 @@ const App: React.FC = () => {
                   {msg.sender === 'Bot' && (
                     <Box
                     component="img"
-                    src="/AiLogo.jpg" // 與 Bot 訊息一致
+                    src="/jxicri.png" // 與 Bot 訊息一致
                     alt="Bot Avatar"
                     sx={{
                       width: '40px',
@@ -215,7 +225,7 @@ const App: React.FC = () => {
                       />
                     )}
                   </Paper>
-                  {msg.sender === 'You' && (
+                  {/* {msg.sender === 'You' && (
                     <Box
                     component="img"
                     src="/AiLogo.jpg" // 與 Bot 訊息一致
@@ -227,7 +237,7 @@ const App: React.FC = () => {
                       mr: '10px',
                     }}
                   />
-                  )}
+                  )} */}
                 </Box>
               </Box>
             ))}
