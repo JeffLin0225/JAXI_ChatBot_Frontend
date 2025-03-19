@@ -8,9 +8,10 @@ import {
   Input,
 } from '@mui/material';
 import { sendMessage } from './api/chatApi';
-import SendIcon from '@mui/icons-material/Send';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import PhotoIcon from '@mui/icons-material/Photo';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+
 
 interface Message {
   sender: 'You' | 'Bot';
@@ -200,13 +201,14 @@ const App: React.FC = () => {
                     }}
                   />
                   )}
+                  {/* 人 , 機*/}
                   <Paper
                     sx={{
                       padding: '10px 15px',
-                      backgroundColor: msg.sender === 'You' ? '#0288d1' : '#424242',
+                      backgroundColor: msg.sender === 'You' ? 'rgb(77, 75, 75)' : '#303030',
                       color: '#fff',
                       borderRadius: '15px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                      boxShadow: '0 1px 3px #303030',
                       wordBreak: 'break-word',
                       maxWidth: '100%',
                     }}
@@ -241,7 +243,7 @@ const App: React.FC = () => {
                 </Box>
               </Box>
             ))}
-            {/* 修改處：添加酷炫轉圈圈效果，當 loading 時顯示在機器人端 */}
+            {/* 圈圈效果 */}
             {loading && (
               <Box
                 sx={{
@@ -284,7 +286,8 @@ const App: React.FC = () => {
             )}
           </Box>
         )}
-        {/* 修改處：定義酷炫轉圈圈的 CSS 動畫 */}
+
+        {/* 圈圈效果 */}
         <style>
           {`
             @keyframes spin {
@@ -296,7 +299,6 @@ const App: React.FC = () => {
       </Box>
 
       {/* 輸入區域 */}
-      {/* 修改處：移除原本的 CircularProgress */}
       <Box
         sx={{
           position: 'sticky',
@@ -346,9 +348,10 @@ const App: React.FC = () => {
             color="primary"
             component="label"
             disabled={loading}
-            sx={{ color: '#fff' }}
+            sx={{ color: '#fff' ,              '&:hover': { backgroundColor: 'white' ,color:'black'},
+          }}
           >
-            <PhotoCamera />
+            <PhotoIcon />
             <Input
               type="file"
               sx={{ display: 'none' }}
@@ -360,14 +363,14 @@ const App: React.FC = () => {
             onClick={handleSend}
             disabled={loading}
             sx={{
-              color: '#fff',
-              backgroundColor: '#0288d1',
+              color: 'white',
+              backgroundColor: 'rgb(115, 113, 113)',
               padding: '10px',
-              '&:hover': { backgroundColor: '#0277bd' },
-              '&.Mui-disabled': { backgroundColor: '#0288d1', opacity: 0.6 },
+              '&:hover': { backgroundColor: 'white' ,color:'black'},
+              '&.Mui-disabled': { backgroundColor: 'white', opacity: 0.6 },
             }}
           >
-            <SendIcon
+            <ArrowUpwardIcon
               sx={{
                 transform: loading ? 'rotate(45deg)' : 'none',
                 transition: 'transform 0.3s ease',
