@@ -1,21 +1,57 @@
-import axios from 'axios';
-
+// chatApi.ts
 const API_URL = 'http://localhost:5001/ask';
 
-export async function sendMessage(prompt: string, image?: File): Promise<string> {
-  const formData = new FormData();
-  formData.append('question', prompt);
-  if (image) {
-    formData.append('image', image);
-  }
+export function sendMessage(
+  prompt: string,
+  onChunk: (chunk: string) => void,
+  image?: File
+): Promise<void> {
+  return new Promise(async (resolve, reject) => {
+    const formData = new FormData();
+    formData.append('question', prompt);
+    if (image) {
+      formData.append('image', image);
+    }
 
-  try {
-    const response = await axios.post(API_URL, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return response.data.answer;
-  } catch (error) {
-    const axiosError = error as any;
-    throw new Error(axiosError.response?.data?.message || '無法連接到伺服器');
-  }
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`伺服器回應錯誤：${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('無法獲取回應流');
+      }
+
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: streamDone } = await reader.read();
+        done = streamDone;
+
+        if (value) {
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') {
+                resolve();
+              } else {
+                onChunk(data); // 傳遞每個字元給前端
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
 }

@@ -1,3 +1,4 @@
+// App.tsx
 import React, { useState } from 'react';
 import {
   Box,
@@ -11,7 +12,6 @@ import { sendMessage } from './api/chatApi';
 import PhotoIcon from '@mui/icons-material/Photo';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-
 
 interface Message {
   sender: 'You' | 'Bot';
@@ -54,14 +54,35 @@ const App: React.FC = () => {
     setLoading(true);
 
     try {
-      const botText = await sendMessage(input, selectedImage);
-      const botMessage: Message = { sender: 'Bot', text: botText };
-      setMessages((prev) => [...prev, botMessage]);
+      let botText = '';
+      let isFirstChunk = true; // 用來標記第一個 chunk
+      await sendMessage(
+        input,
+        (chunk: string) => {
+          if (isFirstChunk) {
+            setLoading(false); // 第一個 chunk 到達時停止轉圈圈
+            isFirstChunk = false;
+          }
+          botText += chunk; // 累積每個資料塊
+          setMessages((prev) => {
+            const updatedMessages = [...prev];
+            const lastMessage = updatedMessages[updatedMessages.length - 1];
+            if (lastMessage && lastMessage.sender === 'Bot') {
+              lastMessage.text = botText; // 更新最後一條 Bot 訊息
+            } else {
+              updatedMessages.push({ sender: 'Bot', text: botText }); // 新增 Bot 訊息
+            }
+            return updatedMessages;
+          });
+        },
+        selectedImage
+      );
     } catch (error) {
+      setLoading(false); // 第一個 chunk 到達時停止轉圈圈
       const errorMessage: Message = { sender: 'Bot', text: `錯誤：${(error as Error).message}` };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
-      setLoading(false);
+      setLoading(false); // 流結束或錯誤時停止 loading
     }
   };
 
@@ -133,18 +154,6 @@ const App: React.FC = () => {
               borderRadius: '5px',
             }}
           />
-          {/* <Typography
-            variant="h2"
-            sx={{
-              backgroundColor: '#424245',
-              color: '#fff',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              fontStyle: 'oblique'
-            }}
-          >
-            JAXI
-          </Typography> */}
         </Box>
       </Box>
 
@@ -190,18 +199,17 @@ const App: React.FC = () => {
                 >
                   {msg.sender === 'Bot' && (
                     <Box
-                    component="img"
-                    src="/jxicri.png" // 與 Bot 訊息一致
-                    alt="Bot Avatar"
-                    sx={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      mr: '10px',
-                    }}
-                  />
+                      component="img"
+                      src="/jxicri.png"
+                      alt="Bot Avatar"
+                      sx={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        mr: '10px',
+                      }}
+                    />
                   )}
-                  {/* 人 , 機*/}
                   <Paper
                     sx={{
                       padding: '10px 15px',
@@ -213,7 +221,7 @@ const App: React.FC = () => {
                       maxWidth: '100%',
                     }}
                   >
-                    <Typography variant="body1">{msg.text}</Typography>
+                    <Typography variant="body1" >{msg.text}</Typography>
                     {msg.image && (
                       <Box
                         component="img"
@@ -227,23 +235,9 @@ const App: React.FC = () => {
                       />
                     )}
                   </Paper>
-                  {/* {msg.sender === 'You' && (
-                    <Box
-                    component="img"
-                    src="/AiLogo.jpg" // 與 Bot 訊息一致
-                    alt="Bot Avatar"
-                    sx={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      mr: '10px',
-                    }}
-                  />
-                  )} */}
                 </Box>
               </Box>
             ))}
-            {/* 圈圈效果 */}
             {loading && (
               <Box
                 sx={{
@@ -261,7 +255,7 @@ const App: React.FC = () => {
                 >
                   <Box
                     component="img"
-                    src="/AiLogo.jpg" // 與 Bot 訊息一致
+                    src="/AiLogo.jpg"
                     alt="Bot Avatar"
                     sx={{
                       width: '40px',
@@ -272,13 +266,13 @@ const App: React.FC = () => {
                   />
                   <Box
                     sx={{
-                      width: '60px', // 更大尺寸
+                      width: '60px',
                       height: '60px',
                       border: '7px dotted rgb(237, 248, 35)',
                       borderTop: '4px solid transparent',
                       borderRadius: '50%',
-                      animation: 'spin 1s linear infinite', // 旋轉動畫
-                      boxShadow: '0 0 10px rgba(252, 255, 103, 0.93)', // 發光效果
+                      animation: 'spin 1s linear infinite',
+                      boxShadow: '0 0 10px rgba(252, 255, 103, 0.93)',
                     }}
                   />
                 </Box>
@@ -287,7 +281,6 @@ const App: React.FC = () => {
           </Box>
         )}
 
-        {/* 圈圈效果 */}
         <style>
           {`
             @keyframes spin {
@@ -348,8 +341,7 @@ const App: React.FC = () => {
             color="primary"
             component="label"
             disabled={loading}
-            sx={{ color: '#fff' ,              '&:hover': { backgroundColor: 'white' ,color:'black'},
-          }}
+            sx={{ color: '#fff', '&:hover': { backgroundColor: 'white', color: 'black' } }}
           >
             <PhotoIcon />
             <Input
@@ -366,7 +358,7 @@ const App: React.FC = () => {
               color: 'white',
               backgroundColor: 'rgb(115, 113, 113)',
               padding: '10px',
-              '&:hover': { backgroundColor: 'white' ,color:'black'},
+              '&:hover': { backgroundColor: 'white', color: 'black' },
               '&.Mui-disabled': { backgroundColor: 'white', opacity: 0.6 },
             }}
           >
