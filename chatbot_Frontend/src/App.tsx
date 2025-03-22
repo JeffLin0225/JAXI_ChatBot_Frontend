@@ -59,6 +59,7 @@ const App: React.FC = () => {
       await sendMessage(
         input,
         (chunk: string) => {
+          // console.log('Received chunk:', chunk); // 檢查 chunk 的實際內容
           if (isFirstChunk) {
             setLoading(false); // 第一個 chunk 到達時停止轉圈圈
             isFirstChunk = false;

@@ -1,5 +1,6 @@
 // chatApi.ts
-const API_URL = 'http://localhost:5001/ask';
+const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = 'http://localhost:5001/ask';
 
 export function sendMessage(
   prompt: string,
@@ -14,7 +15,7 @@ export function sendMessage(
     }
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/ask`, {
         method: 'POST',
         body: formData,
       });
