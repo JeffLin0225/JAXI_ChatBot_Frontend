@@ -5,13 +5,18 @@ const API_URL = import.meta.env.VITE_API_URL;
 export function sendMessage(
   prompt: string,
   onChunk: (chunk: string) => void,
-  image?: File
+  image?: File,
+  isDeepSearch?: boolean | any
 ): Promise<void> {
   return new Promise(async (resolve, reject) => {
     const formData = new FormData();
     formData.append('question', prompt);
     if (image) {
       formData.append('image', image);
+    }
+
+    if(isDeepSearch !== null){
+      formData.append('isDeepSearch', isDeepSearch.toString());
     }
 
     try {

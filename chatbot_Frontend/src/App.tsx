@@ -12,6 +12,7 @@ import { sendMessage } from './api/chatApi';
 import PhotoIcon from '@mui/icons-material/Photo';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import WifiFindIcon from '@mui/icons-material/WifiFind';
 
 interface Message {
   sender: 'You' | 'Bot';
@@ -25,6 +26,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | any>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isDeepSearch , setIsDeepSearch] = useState<boolean | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -37,6 +39,10 @@ const App: React.FC = () => {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     setImagePreview(null);
+  };
+
+  const toggleDeepSearch = () => {
+    setIsDeepSearch((prev) => (prev === true ? null : true)); // 切換 true 和 null
   };
 
   const handleSend = async () => {
@@ -76,7 +82,8 @@ const App: React.FC = () => {
             return updatedMessages;
           });
         },
-        selectedImage
+        selectedImage,
+        isDeepSearch
       );
     } catch (error) {
       setLoading(false); // 第一個 chunk 到達時停止轉圈圈
@@ -84,6 +91,7 @@ const App: React.FC = () => {
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setLoading(false); // 流結束或錯誤時停止 loading
+      setIsDeepSearch(null)
     }
   };
 
@@ -256,7 +264,7 @@ const App: React.FC = () => {
                 >
                   <Box
                     component="img"
-                    src="/AiLogo.jpg"
+                    src="/jxicri.png"
                     alt="Bot Avatar"
                     sx={{
                       width: '40px',
@@ -267,8 +275,8 @@ const App: React.FC = () => {
                   />
                   <Box
                     sx={{
-                      width: '60px',
-                      height: '60px',
+                      width: '50px',
+                      height: '50px',
                       border: '7px dotted rgb(237, 248, 35)',
                       borderTop: '4px solid transparent',
                       borderRadius: '50%',
@@ -276,6 +284,23 @@ const App: React.FC = () => {
                       boxShadow: '0 0 10px rgba(252, 255, 103, 0.93)',
                     }}
                   />
+                  {isDeepSearch === true && (
+                      <Typography
+                        sx={{
+                          color: 'yellow',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                          animation: 'pulse 1.5s infinite, gradientText 3s infinite',
+                          background: 'linear-gradient(90deg, #ffeb3b, #00e5ff, #ffeb3b)',
+                          backgroundSize: '200% 200%',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}
+                      >
+                        <WifiFindIcon/>
+                        啟用 DeepSearch ...
+                      </Typography>
+                    )}
                 </Box>
               </Box>
             )}
@@ -338,6 +363,14 @@ const App: React.FC = () => {
               },
             }}
           />
+          <IconButton
+            onClick={toggleDeepSearch}
+            component="label"
+            disabled={loading}
+            sx={{ color:isDeepSearch ? 'black': '#fff',borderRadius: '30px',fontSize:'small', backgroundColor: isDeepSearch ? 'white': 'rgb(115, 113, 113)', '&:hover': { backgroundColor: 'white', color: 'black' } }}
+          >
+            DeepSearch
+          </IconButton>
           <IconButton
             color="primary"
             component="label"
