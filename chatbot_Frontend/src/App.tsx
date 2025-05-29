@@ -102,6 +102,26 @@ const App: React.FC = () => {
     }
   };
 
+  /* 換行函式 */
+  const formatTextWithBreaks = (text: any ) => {
+  if (!text) return '';
+  
+  return text
+    // 句號、驚嘆號、問號後換行（不管有沒有空格）
+    .replace(/([.。！!？?])/g, '$1\n')
+    // 冒號後換行
+    .replace(/([：:])/g, '$1\n')
+    // 分號後換行  
+    .replace(/([；;])/g, '$1\n')
+    // 特殊格式：**後面跟冒號
+    .replace(/(\*\*[^*]+\*\*[：:])/g, '$1\n')
+    // 項目符號前換行
+    .replace(/(\*\*\*)/g, '\n$1')
+    // 清理多餘空行
+    .replace(/\n+/g, '\n')
+    .trim();
+};
+
   return (
     <Box
       sx={{
@@ -166,7 +186,7 @@ const App: React.FC = () => {
         </Box>
       </Box>
 
-      {/* 對話框 */}
+      {/* =============== 對話框 =============== */}
       <Box
         sx={{
           flexGrow: 1,
@@ -228,9 +248,18 @@ const App: React.FC = () => {
                       boxShadow: '0 1px 3px #303030',
                       wordBreak: 'break-word',
                       maxWidth: '100%',
+                      border: '2px solid white'
                     }}
                   >
-                    <Typography variant="body1" >{msg.text}</Typography>
+                    <Typography 
+                      variant="body1" 
+                      sx={{
+                            whiteSpace: 'pre-wrap',
+                            wordBreak: 'break-word',
+                            overflowWrap: 'break-word',  
+                            lineHeight: '1.6'
+                          }} 
+                    > {formatTextWithBreaks(msg.text)} </Typography>
                     {msg.image && (
                       <Box
                         component="img"
@@ -317,7 +346,7 @@ const App: React.FC = () => {
         </style>
       </Box>
 
-      {/* 輸入區域 */}
+      {/* ==================================== 輸入區域 ==================================== */}
       <Box
         sx={{
           position: 'sticky',
