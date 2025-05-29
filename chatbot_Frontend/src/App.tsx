@@ -128,11 +128,11 @@ const App: React.FC = () => {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#212121',
+        // backgroundColor: '#212121',
         width: '100%',
       }}
     >
-      {/* Navbar */}
+      {/* #################################### Navbar  #################################### */}
       <Box
         sx={{
           position: 'sticky',
@@ -185,24 +185,25 @@ const App: React.FC = () => {
           />
         </Box>
       </Box>
+      {/* #################################### Navbar ＥＮＤ #################################### */}
 
-      {/* =============== 對話框 =============== */}
-      <Box
+      {/* #################################### 對話框  #################################### */}
+      <Box // 對話框範圍
         sx={{
           flexGrow: 1,
           padding: '20px',
           width: '100%',
           maxWidth: 700,
           margin: '0 auto',
-          backgroundColor: '#303030',
+          // backgroundColor: '#303030',
         }}
       >
         {messages.length === 0 ? (
-          <Typography sx={{ textAlign: 'center', color: '#bbb', mt: '20px' }}>
+          <Typography sx={{ textAlign: 'center', color: '#bbb', mt: '20px' , fontSize: 'large'}}>
             開始聊天吧！
           </Typography>
         ) : (
-          <Box
+          <Box // 動態輸出雙方的對話範圍
             sx={{
               width: '100%',
               display: 'flex',
@@ -211,15 +212,15 @@ const App: React.FC = () => {
             }}
           >
             {messages.map((msg, index) => (
-              <Box
+              <Box //  雙方獨立對話框 div 
                 key={index}
                 sx={{
                   display: 'flex',
                   justifyContent: msg.sender === 'You' ? 'flex-end' : 'flex-start',
-                  width: '100%',
+                  width: '100%'
                 }}
               >
-                <Box
+                <Box //  雙方獨立對話框 div裡面
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -227,7 +228,7 @@ const App: React.FC = () => {
                   }}
                 >
                   {msg.sender === 'Bot' && (
-                    <Box
+                    <Box // 頭像框
                       component="img"
                       src="/jxicri.png"
                       alt="Bot Avatar"
@@ -239,7 +240,7 @@ const App: React.FC = () => {
                       }}
                     />
                   )}
-                  <Paper
+                  <Paper  // 個別的輸出對話框 (重點) 
                     sx={{
                       padding: '10px 15px',
                       backgroundColor: msg.sender === 'You' ? 'rgb(77, 75, 75)' : '#303030',
@@ -251,7 +252,7 @@ const App: React.FC = () => {
                       border: '2px solid white'
                     }}
                   >
-                    <Typography 
+                    <Typography   // 文字顯示得樣式
                       variant="body1" 
                       sx={{
                             whiteSpace: 'pre-wrap',
@@ -276,7 +277,7 @@ const App: React.FC = () => {
                 </Box>
               </Box>
             ))}
-            {loading && (
+            {loading && ( // 轉圈圈區
               <Box
                 sx={{
                   display: 'flex',
@@ -345,8 +346,9 @@ const App: React.FC = () => {
           `}
         </style>
       </Box>
+      {/* #################################### 對話框區域 ＥＮＤ #################################### */}
 
-      {/* ==================================== 輸入區域 ==================================== */}
+      {/* #################################### 輸入區域 #################################### */}
       <Box
         sx={{
           position: 'sticky',
@@ -354,9 +356,11 @@ const App: React.FC = () => {
           padding: '10px 20px',
           backgroundColor: '#424242',
           borderTop: '1px solid #616161',
+          borderRadius: '10px',
           width: '100%',
           maxWidth: 700,
           margin: '0 auto',
+          marginBottom : '10px'
         }}
       >
         {imagePreview && (
@@ -434,6 +438,8 @@ const App: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
+      {/* #################################### 輸入區域 ＥＮＤ #################################### */}
+
     </Box>
   );
 };
