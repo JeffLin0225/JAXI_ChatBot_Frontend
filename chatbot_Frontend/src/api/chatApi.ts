@@ -2,7 +2,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 // const API_URL = 'http://localhost:5001/ask';
 
-export function sendMessage(
+export function messageInteraction(
   prompt: string,
   onChunk: (chunk: string) => void,
   image?: File,
