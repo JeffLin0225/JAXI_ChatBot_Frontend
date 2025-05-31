@@ -8,9 +8,9 @@ const Navbar :React.FC= () => {
                 position: 'sticky',
                 top: 0,
                 zIndex: 1,
-                backgroundColor: '#212121',
+                // backgroundColor: '#212121',
                 padding: '15px 20px',
-                borderBottom: '1px solid #424242',
+                // borderBottom: '1px solid #424242',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -21,20 +21,20 @@ const Navbar :React.FC= () => {
                 src="/AiLogo2.jpg"
                 alt="ChatBot Icon"
                 sx={{
-                width: '120px',
-                borderRadius: '10px',
+                    width: '120px',
+                    borderRadius: '10px',
                 }}
             />
             <Box
                 sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-end',
                 gap: '15px',
                 flexGrow: 1,
                 }}
             >
-                <Box
+                {/* <Box
                 component="img"
                 src="/jaxi.jpg"
                 alt="ChatBot Icon"
@@ -42,7 +42,7 @@ const Navbar :React.FC= () => {
                     height: '100px',
                     borderRadius: '10px',
                 }}
-                />
+                /> */}
                 <Box
                 component="img"
                 src="/AiLogo.jpg"

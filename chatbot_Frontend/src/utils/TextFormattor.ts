@@ -1,4 +1,9 @@
-export const TextFormattor = (text: any ) => {
+
+/*
+    針對文字符號歸規加入換行符號
+    以便CSS辨識處理顯示樣式
+*/ 
+export const textFormattor = (text: any ) => {
     if (!text) return '';
 
     return text
