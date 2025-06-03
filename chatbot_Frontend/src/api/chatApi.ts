@@ -16,7 +16,7 @@ export function messageInteraction(
     }
 
     if(isDeepSearch !== null){
-      formData.append('isDeepSearch', isDeepSearch.toString());
+      formData.append('is_deepsearch', isDeepSearch);
     }
 
     try {
